@@ -47,12 +47,21 @@ class Album extends Component {
     }
   }
 
-  handleSongHover(song) {
-    const isSameSong = this.state.currentSong === song;
-    
+  handleOnMouseEnter(song) {
+    console.log('Hovering');
+    song.isHovering = true;
+    this.setState({ album: this.state.album});
+  }
+
+  handleOnMouseLeave(song) {
+    console.log('Not hovering');
+    song.isHovering = false;
+    this.setState({ album: this.state.album});
   }
 
   render() {
+    const play = <span className="ion-md-play"></span>;
+    const pause = <span className="ion-md-pause"></span>;
     return (
       <section className="album">
         <section id="album-info">
@@ -72,12 +81,21 @@ class Album extends Component {
         <tbody>
           {
             this.state.album.songs.map( (song, index) =>
-              <tr className="song" key={index} onClick={() => this.handleSongClick(song)} onMouseEnter={() => {song.isHovering = true }} onMouseLeave={() => {song.isHovering = false}} >
-                {console.log(song.isHovering)}
-                <td>Song #{index + 1}</td>
-                // if isHoveringOverRow
-                  <span className="ion-md-play"></span>
-                  <span className="ion-md-pause"></span>
+              <tr
+                className="song"
+                key={index}
+                onClick={() => this.handleSongClick(song)}
+                onMouseEnter={() => this.handleOnMouseEnter(song)}
+                onMouseLeave={() => this.handleOnMouseLeave(song)}
+              >
+                <td>
+                  {this.state.currentSong.title === song.title
+                    ? this.state.currentSong.title === song.title ? pause : play
+                    : "Song #" + index + 1
+                  }
+
+
+                </td>
                 <td>{song.title}</td>
                 <td>{song.duration} seconds</td>
               </tr>
