@@ -13,7 +13,7 @@ class Album extends Component {
       album: album,
       currentSong: album.songs[0],
       isPlaying: false,
-      isHovering: false
+      hoveredSong: null
     };
 
     this.audioElement = document.createElement('audio');
@@ -48,20 +48,38 @@ class Album extends Component {
   }
 
   handleOnMouseEnter(song) {
-    console.log('Hovering');
-    song.isHovering = true;
-    this.setState({ album: this.state.album});
+    this.setState({hoveredSong: song});
   }
 
   handleOnMouseLeave(song) {
-    console.log('Not hovering');
-    song.isHovering = false;
-    this.setState({ album: this.state.album});
+    this.setState({hoveredSong: null});
+  }
+
+  getTrackIcon(song, index) {
+    const play = <span className="ion-md-play"></span>;
+    const pause = <span className="ion-md-pause"></span>;
+    const isHovering = song === this.state.hoveredSong;
+    const isCurrentSong = song === this.state.currentSong;
+    const isCurrentSongPlaying = song === this.state.currentSong && this.state.isPlaying;
+
+    if (isHovering) {
+      if (isCurrentSongPlaying) {
+        return pause;
+      } else {
+        return play;
+      }
+    } else {
+      if (isCurrentSongPlaying) {
+        return pause;
+      } else if (isCurrentSong) {
+        return play;
+      } else {
+        return index + 1;
+      }
+    }
   }
 
   render() {
-    const play = <span className="ion-md-play"></span>;
-    const pause = <span className="ion-md-pause"></span>;
     return (
       <section className="album">
         <section id="album-info">
@@ -88,14 +106,7 @@ class Album extends Component {
                 onMouseEnter={() => this.handleOnMouseEnter(song)}
                 onMouseLeave={() => this.handleOnMouseLeave(song)}
               >
-                <td>
-                  {this.state.currentSong.title === song.title
-                    ? this.state.currentSong.title === song.title ? pause : play
-                    : "Song #" + index + 1
-                  }
-
-
-                </td>
+                <td>{this.getTrackIcon(song, index)}</td>
                 <td>{song.title}</td>
                 <td>{song.duration} seconds</td>
               </tr>
