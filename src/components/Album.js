@@ -76,7 +76,6 @@ class Album extends Component {
     const play = <span className="ion-md-play"></span>;
     const pause = <span className="ion-md-pause"></span>;
     const isHovering = song === this.state.hoveredSong;
-    const isCurrentSong = song === this.state.currentSong;
     const isCurrentSongPlaying = song === this.state.currentSong && this.state.isPlaying;
 
     if (isHovering) {
@@ -88,8 +87,6 @@ class Album extends Component {
     } else {
       if (isCurrentSongPlaying) {
         return pause;
-      } else if (isCurrentSong) {
-        return play;
       } else {
         return index + 1;
       }
