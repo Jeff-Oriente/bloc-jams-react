@@ -172,7 +172,7 @@ class Album extends Component {
               >
                 <td>{this.getTrackIcon(song, index)}</td>
                 <td>{song.title}</td>
-                <td>{this.formatTime(song.duration)} seconds</td>
+                <td>{this.formatTime(song.duration)}</td>
               </tr>
           )
           }
